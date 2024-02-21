@@ -1,4 +1,4 @@
 SEND
 destination:/api/message
 
-{"name":"%s",content":"%s"}
+{"name":"%s","content":"%s"}

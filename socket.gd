@@ -13,8 +13,10 @@ func _ready():
 	pass
 
 func connect_to_url(url) -> int:
+	socket.handshake_headers = PackedStringArray(["Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits"])
 	var err = socket.connect_to_url(url, tls_options)
 	if err != OK:
+		log_message("Error connecting")
 		return err
 	last_state = socket.get_ready_state()
 	return OK
@@ -22,18 +24,26 @@ func connect_to_url(url) -> int:
 
 func subscribe() -> int:
 	var content = load_file("res://connect.txt")
-	var err = socket.send(content.to_utf8_buffer())
-	log_message("Connect message" + str(err))
+	var content_byte_arr = content.to_utf8_buffer()
+	content_byte_arr.append_array(PackedByteArray([null]))
+	var err = socket.send(content_byte_arr)
 	content = load_file("res://subscribe.txt")
-	err = socket.send(content.to_utf8_buffer())
-	log_message("Subscribe message "+str(err))
+	content_byte_arr = content.to_utf8_buffer()
+	content_byte_arr.append_array(PackedByteArray([null]))
+	err = socket.send(content_byte_arr)
+	#send("HELLO")
 	return err
 
 
 func send(message) -> int:
 	var content = load_file("res://send.txt")
 	content = content%["godot", message]
-	return socket.send(PackedByteArray([content]))
+	var content_byte_arr = content.to_utf8_buffer()
+	content_byte_arr.append_array(PackedByteArray([null]))
+	print(content_byte_arr)
+	print(content_byte_arr.size())
+	var err = socket.send(content_byte_arr)
+	return err
 
 func get_message() -> Variant:
 	if socket.get_available_packet_count() < 1:
@@ -45,6 +55,7 @@ func get_message() -> Variant:
 
 
 func close(code := 1000, reason := "") -> void:
+	log_message("Socket closed, code: %s, reason: %s" % [str(code), str(reason)])
 	socket.close(code, reason)
 	last_state = socket.get_ready_state()
 
@@ -68,7 +79,7 @@ func poll() -> void:
 			connected_to_server.emit()
 		elif state == socket.STATE_CLOSED:
 			connection_closed.emit()
-	
+
 	while state == socket.STATE_OPEN and socket.get_available_packet_count() > 0:
 		log_message("Message received")
 		message_received.emit(get_message())

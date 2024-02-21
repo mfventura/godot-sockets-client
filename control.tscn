@@ -40,9 +40,10 @@ offset_left = 321.0
 offset_top = 38.0
 offset_right = 467.0
 offset_bottom = 84.0
-text = "Subscribe"
+text = "Connect and Subscribe"
 
 [node name="openServer" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 79.0
 offset_top = 31.0

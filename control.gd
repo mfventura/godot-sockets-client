@@ -14,18 +14,21 @@ func message_received(message):
 
 func connection_closed():
 	print("Connection closed")
+	$connect.visible = true
 
 func _on_button_pressed():
+	#Socket.test()
+	Socket.close()
 	var err = Socket.send($message.text)
-	print(err)
 	$message.text = ""
+
+func _on_connect_pressed():
+	var err= Socket.connect_to_url("ws://127.0.0.1:8080/ws")
+	print("Socket connect to url value "+str(err))
 
 func connection_open():
 	Socket.subscribe()
-
-
-func _on_connect_pressed():
-	Socket.connect_to_url("ws://localhost:9080/ws")
+	$connect.visible = false
 
 
 func _on_open_server_pressed():
