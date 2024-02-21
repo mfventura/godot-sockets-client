@@ -6,7 +6,7 @@ var last_state = WebSocketPeer.STATE_CLOSED
 
 
 signal connected_to_server()
-signal connection_closed()
+signal lasignal()
 signal message_received(message: Variant)
 
 func _ready():
@@ -23,23 +23,32 @@ func connect_to_url(url) -> int:
 
 
 func subscribe() -> int:
+	"""
 	var content = load_file("res://connect.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
 	var err = socket.send(content_byte_arr)
-	content = load_file("res://subscribe.txt")
-	content_byte_arr = content.to_utf8_buffer()
+	"""
+	var content = load_file("res://subscribe.txt")
+	var content_byte_arr = content.to_utf8_buffer()
+	print(content_byte_arr)
 	content_byte_arr.append_array(PackedByteArray([null]))
-	err = socket.send(content_byte_arr)
-	#send("HELLO")
+	print(content)
+	print(content_byte_arr)
+	print(content_byte_arr.size())
+	print([89])
+	print(PackedByteArray([89]))
+	var err = socket.send_text(content)
+	socket.send(PackedByteArray([null]))
 	return err
-
 
 func send(message) -> int:
 	var content = load_file("res://send.txt")
 	content = content%["godot", message]
+	#var content = load_file("res://subscribe-2.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
+	print(content)
 	print(content_byte_arr)
 	print(content_byte_arr.size())
 	var err = socket.send(content_byte_arr)
@@ -52,13 +61,6 @@ func get_message() -> Variant:
 	if socket.was_string_packet():
 		return pkt.get_string_from_utf8()
 	return bytes_to_var(pkt)
-
-
-func close(code := 1000, reason := "") -> void:
-	log_message("Socket closed, code: %s, reason: %s" % [str(code), str(reason)])
-	socket.close(code, reason)
-	last_state = socket.get_ready_state()
-
 
 func clear() -> void:
 	socket = WebSocketPeer.new()
@@ -78,7 +80,7 @@ func poll() -> void:
 		if state == socket.STATE_OPEN:
 			connected_to_server.emit()
 		elif state == socket.STATE_CLOSED:
-			connection_closed.emit()
+			lasignal.emit()
 
 	while state == socket.STATE_OPEN and socket.get_available_packet_count() > 0:
 		log_message("Message received")
@@ -98,6 +100,7 @@ func load_file(file):
 			content = content + "\n"
 	f.close()
 	return content
+
 
 func log_message(message):
 	var time = Time.get_time_string_from_system()

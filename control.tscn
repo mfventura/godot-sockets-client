@@ -36,11 +36,11 @@ placeholder_text = "Your message"
 
 [node name="connect" type="Button" parent="."]
 layout_mode = 0
-offset_left = 321.0
-offset_top = 38.0
-offset_right = 467.0
-offset_bottom = 84.0
-text = "Connect and Subscribe"
+offset_left = 114.0
+offset_top = 39.0
+offset_right = 260.0
+offset_bottom = 85.0
+text = "Connect"
 
 [node name="openServer" type="Button" parent="."]
 visible = false
@@ -51,6 +51,15 @@ offset_right = 255.0
 offset_bottom = 93.0
 text = "SERVER OPEN"
 
+[node name="subscribe" type="Button" parent="."]
+layout_mode = 0
+offset_left = 322.0
+offset_top = 42.0
+offset_right = 439.0
+offset_bottom = 81.0
+text = "Subscribe"
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="connect" to="." method="_on_connect_pressed"]
 [connection signal="pressed" from="openServer" to="." method="_on_open_server_pressed"]
+[connection signal="pressed" from="subscribe" to="." method="_on_subscribe_pressed"]

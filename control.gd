@@ -3,7 +3,7 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Socket.message_received.connect(message_received)
-	Socket.connection_closed.connect(connection_closed)
+	Socket.lasignal.connect(connection_closed)
 	Socket.connected_to_server.connect(connection_open)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -17,8 +17,6 @@ func connection_closed():
 	$connect.visible = true
 
 func _on_button_pressed():
-	#Socket.test()
-	Socket.close()
 	var err = Socket.send($message.text)
 	$message.text = ""
 
@@ -28,7 +26,6 @@ func _on_connect_pressed():
 
 func connection_open():
 	print("Connection open signal")
-	#Socket.subscribe()
 	$connect.visible = false
 
 
@@ -36,3 +33,7 @@ func _on_open_server_pressed():
 	var server_scene = load("res://server.tscn")
 	add_child(server_scene.instantiate())
 
+
+
+func _on_subscribe_pressed():
+	Socket.subscribe()
