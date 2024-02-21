@@ -1,0 +1,4 @@
+CONNECT
+accept-version:1.2,1.1,1.0
+heart-beat:10000,10000
+

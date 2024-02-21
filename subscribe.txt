@@ -1,0 +1,5 @@
+SUBSCRIBE
+user:godot
+id:random123
+destination:/topic/messages
+
