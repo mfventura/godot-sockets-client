@@ -23,11 +23,12 @@ func _on_button_pressed():
 	$message.text = ""
 
 func _on_connect_pressed():
-	var err= Socket.connect_to_url("ws://127.0.0.1:8080/ws")
+	var err= Socket.connect_to_url("ws://localhost:8080/ws")
 	print("Socket connect to url value "+str(err))
 
 func connection_open():
-	Socket.subscribe()
+	print("Connection open signal")
+	#Socket.subscribe()
 	$connect.visible = false
 
 
