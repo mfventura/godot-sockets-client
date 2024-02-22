@@ -1,5 +1,0 @@
-SUBSCRIBE
-user:godot
-id:sub-1
-destination:/topic/messages
-

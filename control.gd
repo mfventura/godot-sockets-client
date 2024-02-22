@@ -15,6 +15,7 @@ func message_received(message):
 func connection_closed():
 	print("Connection closed")
 	$connect.visible = true
+	$close.visible = false
 
 func _on_button_pressed():
 	var err = Socket.send($message.text)
@@ -27,6 +28,7 @@ func _on_connect_pressed():
 func connection_open():
 	print("Connection open signal")
 	$connect.visible = false
+	$close.visible = true
 
 
 func _on_open_server_pressed():
@@ -37,3 +39,11 @@ func _on_open_server_pressed():
 
 func _on_subscribe_pressed():
 	Socket.subscribe()
+
+
+func _on_heart_beat_pressed():
+	Socket.heart_beat()
+
+
+func _on_close_pressed():
+	Socket.close()

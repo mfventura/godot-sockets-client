@@ -21,36 +21,25 @@ func connect_to_url(url) -> int:
 	last_state = socket.get_ready_state()
 	return OK
 
-
-func subscribe() -> int:
-	"""
+func heart_beat() -> int:
 	var content = load_file("res://connect.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
 	var err = socket.send(content_byte_arr)
-	"""
+	return err
+
+func subscribe() -> int:
 	var content = load_file("res://subscribe.txt")
 	var content_byte_arr = content.to_utf8_buffer()
-	print(content_byte_arr)
 	content_byte_arr.append_array(PackedByteArray([null]))
-	print(content)
-	print(content_byte_arr)
-	print(content_byte_arr.size())
-	print([89])
-	print(PackedByteArray([89]))
-	var err = socket.send_text(content)
-	socket.send(PackedByteArray([null]))
+	var err = socket.send(content_byte_arr)
 	return err
 
 func send(message) -> int:
 	var content = load_file("res://send.txt")
 	content = content%["godot", message]
-	#var content = load_file("res://subscribe-2.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
-	print(content)
-	print(content_byte_arr)
-	print(content_byte_arr.size())
 	var err = socket.send(content_byte_arr)
 	return err
 
@@ -92,7 +81,6 @@ func _process(delta):
 
 func load_file(file):
 	var f = FileAccess.open(file, FileAccess.READ)
-	var index = 1
 	var content = ""
 	while not f.eof_reached(): # iterate through all lines until the end of file is reached
 		content = content + f.get_line()
@@ -101,6 +89,9 @@ func load_file(file):
 	f.close()
 	return content
 
+
+func close():
+	socket.close()
 
 func log_message(message):
 	var time = Time.get_time_string_from_system()

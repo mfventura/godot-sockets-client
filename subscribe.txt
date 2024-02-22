@@ -1,5 +1,5 @@
 SUBSCRIBE
 user:godot
-id:sub-1
+id:sub-0
 destination:/topic/messages
 
