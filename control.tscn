@@ -60,6 +60,13 @@ offset_right = 256.0
 offset_bottom = 85.0
 text = "Close"
 
+[node name="log" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 611.0
+offset_top = 31.0
+offset_right = 1126.0
+offset_bottom = 618.0
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="connect" to="." method="_on_connect_pressed"]
 [connection signal="pressed" from="subscribe" to="." method="_on_subscribe_pressed"]

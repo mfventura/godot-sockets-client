@@ -13,7 +13,6 @@ func _ready():
 	pass
 
 func connect_to_url(url) -> int:
-	socket.handshake_headers = PackedStringArray(["Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits"])
 	var err = socket.connect_to_url(url, tls_options)
 	if err != OK:
 		log_message("Error connecting")
