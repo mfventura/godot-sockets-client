@@ -6,7 +6,7 @@ var last_state = WebSocketPeer.STATE_CLOSED
 
 
 signal connected_to_server()
-signal lasignal()
+signal connection_closed()
 signal message_received(message: Variant)
 
 func _ready():
@@ -42,10 +42,17 @@ func send(message) -> int:
 	var err = socket.send(content_byte_arr)
 	return err
 
+#This message should be handled by the STOMP message processor
 func get_message() -> Variant:
 	if socket.get_available_packet_count() < 1:
 		return null
 	var pkt = socket.get_packet()
+	#Testeo
+	var string = pkt.get_string_from_utf8()
+	var lines = string.split("\n")
+	print(lines)
+
+	
 	if socket.was_string_packet():
 		return pkt.get_string_from_utf8()
 	return bytes_to_var(pkt)
@@ -66,9 +73,10 @@ func poll() -> void:
 	if last_state != state:
 		last_state = state
 		if state == socket.STATE_OPEN:
+			heart_beat()
 			connected_to_server.emit()
 		elif state == socket.STATE_CLOSED:
-			lasignal.emit()
+			connection_closed.emit()
 
 	while state == socket.STATE_OPEN and socket.get_available_packet_count() > 0:
 		log_message("Message received")

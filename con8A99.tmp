@@ -37,11 +37,19 @@ text = "Connect"
 
 [node name="subscribe" type="Button" parent="."]
 layout_mode = 0
-offset_left = 442.0
+offset_left = 449.0
 offset_top = 42.0
-offset_right = 559.0
+offset_right = 566.0
 offset_bottom = 81.0
 text = "Subscribe"
+
+[node name="heartBeat" type="Button" parent="."]
+layout_mode = 0
+offset_left = 283.0
+offset_top = 36.0
+offset_right = 440.0
+offset_bottom = 87.0
+text = "Hearth Beat"
 
 [node name="close" type="Button" parent="."]
 visible = false
@@ -52,14 +60,8 @@ offset_right = 256.0
 offset_bottom = 85.0
 text = "Close"
 
-[node name="log" type="RichTextLabel" parent="."]
-layout_mode = 0
-offset_left = 611.0
-offset_top = 31.0
-offset_right = 1126.0
-offset_bottom = 618.0
-
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="connect" to="." method="_on_connect_pressed"]
 [connection signal="pressed" from="subscribe" to="." method="_on_subscribe_pressed"]
+[connection signal="pressed" from="heartBeat" to="." method="_on_heart_beat_pressed"]
 [connection signal="pressed" from="close" to="." method="_on_close_pressed"]
