@@ -1,5 +1,6 @@
 SUBSCRIBE
-user:godot
-id:clientIDForSubscription
-destination:/topic/messages
+user:%s
+id:%s
+destination:%s
+receipt:%s
 

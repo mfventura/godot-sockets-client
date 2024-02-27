@@ -20,53 +20,27 @@ static var message_received: Signal = (func():
 static func connect_to_url(url) -> int:
 	var err = socket.connect_to_url(url, tls_options)
 	if err != OK:
-		log_message("Error connecting")
+		log_message("Error connecting, result %s"%err)
 		return err
 	last_state = socket.get_ready_state()
 	return OK
 
-static func heart_beat() -> int:
-	var content = load_file("res://message_templates/connect.txt")
-	var content_byte_arr = content.to_utf8_buffer()
-	content_byte_arr.append_array(PackedByteArray([null]))
-	var err = socket.send(content_byte_arr)
-	return err
-
-static func subscribe() -> int:
-	var content = load_file("res://message_templates/subscribe.txt")
-	var content_byte_arr = content.to_utf8_buffer()
-	content_byte_arr.append_array(PackedByteArray([null]))
-	var err = socket.send(content_byte_arr)
-	return err
-
 static func send(message) -> int:
-	var content = load_file("res://message_templates/send.txt")
-	content = content%["godot", message]
-	var content_byte_arr = content.to_utf8_buffer()
+	var content_byte_arr = message.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
 	var err = socket.send(content_byte_arr)
 	return err
 
-#This message should be handled by the STOMP message processor
 static func get_message() -> Variant:
 	if socket.get_available_packet_count() < 1:
 		return null
 	var pkt = socket.get_packet()
-	#Testeo
-	var string = pkt.get_string_from_utf8()
-
 	if socket.was_string_packet():
 		return pkt.get_string_from_utf8()
 	return bytes_to_var(pkt)
 
-static func clear() -> void:
-	socket = WebSocketPeer.new()
-	last_state = socket.get_ready_state()
-
-
 static func get_socket() -> WebSocketPeer:
 	return socket
-
 
 static func poll() -> void:
 	if socket.get_ready_state() != socket.STATE_CLOSED:
