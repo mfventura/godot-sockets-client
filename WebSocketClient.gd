@@ -26,21 +26,21 @@ static func connect_to_url(url) -> int:
 	return OK
 
 static func heart_beat() -> int:
-	var content = ""#load_file("res://connect.txt")
+	var content = load_file("res://message_templates/connect.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
 	var err = socket.send(content_byte_arr)
 	return err
 
 static func subscribe() -> int:
-	var content = ""#load_file("res://subscribe.txt")
+	var content = load_file("res://message_templates/subscribe.txt")
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
 	var err = socket.send(content_byte_arr)
 	return err
 
 static func send(message) -> int:
-	var content = ""#load_file("res://send.txt")
+	var content = load_file("res://message_templates/send.txt")
 	content = content%["godot", message]
 	var content_byte_arr = content.to_utf8_buffer()
 	content_byte_arr.append_array(PackedByteArray([null]))
@@ -88,3 +88,13 @@ static func close():
 static func log_message(message):
 	var time = Time.get_time_string_from_system()
 	print("WebSocketClient: "+time +" "+ message)
+
+static func load_file(file) -> String:
+	var f = FileAccess.open(file, FileAccess.READ)
+	var content = ""
+	while not f.eof_reached(): # iterate through all lines until the end of file is reached
+		content = content + f.get_line()
+		if not f.eof_reached():
+			content = content + "\n"
+	f.close()
+	return content

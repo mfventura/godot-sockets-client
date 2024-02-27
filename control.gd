@@ -25,6 +25,7 @@ func _on_connect_pressed():
 
 func connection_open():
 	print("Connection open")
+	WebSocketClient.heart_beat()
 	$connect.visible = false
 	$close.visible = true
 

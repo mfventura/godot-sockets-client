@@ -26,7 +26,7 @@ func _process(delta):
 func _process_message(message: Variant):
 	pass
 
-func load_file(file):
+func load_file(file) -> String:
 	var f = FileAccess.open(file, FileAccess.READ)
 	var content = ""
 	while not f.eof_reached(): # iterate through all lines until the end of file is reached
